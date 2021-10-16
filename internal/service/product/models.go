@@ -25,5 +25,5 @@ var allProducts = []Product{
 }
 
 func (p *Product) String() string {
-	return fmt.Sprintf("\"%v\"", p.Title)
+	return fmt.Sprintf("%v\n\n  Description: TBD", p.Title)
 }
