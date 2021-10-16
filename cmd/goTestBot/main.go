@@ -42,9 +42,23 @@ func main() {
 
 		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
 
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "You wrote: \""+update.Message.Text+"\"")
-		msg.ReplyToMessageID = update.Message.MessageID
-
-		bot.Send(msg)
+		switch update.Message.Command() {
+		case "help":
+			processHelp(bot, update.Message)
+		default:
+			processDefault(bot, update.Message)
+		}
 	}
+}
+
+func processHelp(bot *tgbotapi.BotAPI, inputMessage *tgbotapi.Message) {
+	msg := tgbotapi.NewMessage(inputMessage.Chat.ID, "Help: Some help.")
+	bot.Send(msg)
+}
+
+func processDefault(bot *tgbotapi.BotAPI, inputMessage *tgbotapi.Message) {
+	msg := tgbotapi.NewMessage(inputMessage.Chat.ID, "You wrote: \""+inputMessage.Text+"\"")
+	msg.ReplyToMessageID = inputMessage.MessageID
+
+	bot.Send(msg)
 }
